@@ -83,7 +83,7 @@ public class ActTogglerConfig : SimpleModConfig
         {
             var actAssembly = act.GetType().Assembly;
             var mod = ModManager.GetLoadedMods()
-                .FirstOrDefault(m => m.assemblies.Contains(actAssembly));
+                .FirstOrDefault(m => m.assembly == actAssembly);
             if (mod?.manifest?.name != null)
                 return $"{title} ({mod.manifest.name})";
         }
