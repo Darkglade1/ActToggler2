@@ -1,0 +1,11 @@
+{
+  "id": "ActToggler2",
+  "name": "Act Toggler 2",
+  "author": "Darkglade",
+  "description": "Lets you toggle acts with a config",
+  "version": "v1.0.0",
+  "has_pck": true,
+  "has_dll": true,
+  "dependencies": [{"id": "BaseLib", "min_version": "3.4.0"}],
+  "affects_gameplay": true
+}
