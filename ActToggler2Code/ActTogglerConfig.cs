@@ -26,6 +26,8 @@ public class ActTogglerConfig : SimpleModConfig
         { 2, typeof(ActTogglerConfig).GetProperty(nameof(EnabledAct2))! },
         { 3, typeof(ActTogglerConfig).GetProperty(nameof(EnabledAct3))! },
     };
+    
+    private Action? _refreshActiveUI;
 
     private static Dictionary<string, int> ParseWeights(int slot)
     {
@@ -358,5 +360,37 @@ public class ActTogglerConfig : SimpleModConfig
         }));
 
         AddRestoreDefaultsButton(optionContainer);
+        
+        _refreshActiveUI = () =>
+        {
+            if (GodotObject.IsInstanceValid(basicContent) && basicContent.Visible)
+            {
+                foreach (var refresh in refreshBasicActions) refresh();
+            }
+
+            if (GodotObject.IsInstanceValid(advancedContent) && advancedContent.Visible)
+            {
+                foreach (var refresh in refreshAdvancedActions) refresh();
+            }
+        };
+    }
+    protected override void RestoreDefaultsNoConfirm()
+    {
+        base.RestoreDefaultsNoConfirm();
+
+        for (int slot = 1; slot <= 3; slot++)
+        {
+            var acts = GetActsForSlot(slot);
+            var weights = new Dictionary<string, int>();
+
+            foreach (var act in acts)
+            {
+                weights[act.GetType().Name] = 1;
+            }
+
+            SaveWeights(slot, weights);
+        }
+
+        _refreshActiveUI?.Invoke();
     }
 }
